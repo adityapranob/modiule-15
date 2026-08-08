@@ -1,0 +1,26 @@
+# Docker Compose version is optional in newer Docker, but keeping services clear is useful for students.
+services:
+  # This service runs Redis Stack, which includes Redis server and Redis dashboard.
+  redis:
+    # Redis Stack gives us Redis on port 6379 and dashboard on port 8001.
+    image: redis/redis-stack:latest
+
+    # A readable container name helps students identify it in Docker Desktop.
+    container_name: express_redis_stack
+
+    # Restarting unless stopped is useful during development.
+    restart: unless-stopped
+
+    # Port 6379 is used by our Express app to connect to Redis.
+    # Port 8001 is used by Redis dashboard in the browser.
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+
+    # This volume keeps Redis data even if the container restarts.
+    volumes:
+      - redis_data:/data
+
+# Docker volume keeps Redis data outside the container filesystem.
+volumes:
+  redis_data:
